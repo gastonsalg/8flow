@@ -1,0 +1,35 @@
+{
+  "name": "n8n-cli",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "bin": {
+    "n8n": "dist/index.js"
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/index.ts",
+    "gen:api": "openapi-typescript docs/n8n.openapi.json -o src/api/schema.d.ts",
+    "postinstall": "npm run build",
+    "prepublishOnly": "npm run build",
+    "start": "node dist/index.js",
+    "test": "node --test --import tsx"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "commander": "^12.1.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.4",
+    "openapi-typescript": "^7.6.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}

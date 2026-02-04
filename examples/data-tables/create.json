@@ -1,0 +1,7 @@
+{
+  "name": "customers",
+  "columns": [
+    {"name": "email", "type": "string"},
+    {"name": "plan", "type": "string"}
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "data": [
+    {"email": "a@example.com", "plan": "starter"},
+    {"email": "b@example.com", "plan": "pro"}
+  ]
+}

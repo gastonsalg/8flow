@@ -1,0 +1,5 @@
+{
+  "key": "API_HOST",
+  "value": "https://example",
+  "type": "string"
+}

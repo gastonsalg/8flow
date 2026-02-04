@@ -1,0 +1,20 @@
+{
+  "name": "Hello World Updated",
+  "nodes": [
+    {
+      "parameters": {
+        "value": "Hello from CLI v2"
+      },
+      "id": "1",
+      "name": "Start",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        260,
+        300
+      ]
+    }
+  ],
+  "connections": {},
+  "settings": {}
+}
