@@ -1,5 +1,5 @@
 {
-  "name": "n8n-cli",
+  "name": "n8n-unofficial-cli",
   "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",

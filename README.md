@@ -4,6 +4,8 @@ Simple CLI for interacting with n8n instances using API keys.
 
 API compatibility: targets the n8n Public API at `/api/v1` as defined by `docs/n8n.openapi.json` (info.version `1.1.1`).
 
+Disclaimer: This is an unofficial community project and is not affiliated with, endorsed by, or sponsored by n8n GmbH.
+
 ## Setup
 
 Install dependencies:
