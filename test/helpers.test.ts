@@ -3,7 +3,12 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
-import { parseJsonInput, parseKeyValuePairs, printResult } from "../src/commands/helpers.js";
+import {
+  parseJsonInput,
+  parseKeyValuePairs,
+  printResult,
+  setDefaultPretty,
+} from "../src/commands/helpers.js";
 
 test("parseKeyValuePairs handles pairs", () => {
   const result = parseKeyValuePairs(["a=1", "b=two"]);
@@ -74,4 +79,22 @@ test("printResult supports jsonl output for data arrays", () => {
   }
 
   assert.deepEqual(logs, ['{"id":"1"}', '{"id":"2"}']);
+});
+
+test("printResult uses global pretty setting when local pretty is omitted", () => {
+  const originalLog = console.log;
+  const logs: string[] = [];
+  console.log = (message?: unknown) => {
+    logs.push(String(message ?? ""));
+  };
+
+  try {
+    setDefaultPretty(false);
+    printResult({ id: "1", ok: true });
+  } finally {
+    setDefaultPretty(true);
+    console.log = originalLog;
+  }
+
+  assert.deepEqual(logs, ['{"id":"1","ok":true}']);
 });

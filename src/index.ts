@@ -50,13 +50,21 @@ import {
   upsertRows,
 } from "./commands/dataTables.js";
 import { pullSourceControl } from "./commands/sourceControl.js";
+import { setDefaultPretty } from "./commands/helpers.js";
 
 const program = new Command();
 
 program
   .name("n8n")
   .description("CLI for n8n instances")
+  .option("--no-pretty", "Print compact JSON for all commands")
   .version("0.1.0");
+
+program.hook("preAction", (thisCommand) => {
+  const command = thisCommand as Command & { optsWithGlobals?: () => Record<string, unknown> };
+  const options = command.optsWithGlobals ? command.optsWithGlobals() : program.opts();
+  setDefaultPretty(options.pretty !== false);
+});
 
 const profiles = program.command("profiles").description("Manage n8n instance profiles");
 
