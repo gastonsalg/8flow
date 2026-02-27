@@ -88,6 +88,7 @@ Executions:
 ```
 n8n executions list --query limit=10
 n8n executions get <id>
+n8n executions get <id> --include-data
 n8n executions retry <id>
 n8n executions delete <id>
 ```

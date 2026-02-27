@@ -204,9 +204,10 @@ executions
   .command("get")
   .description("Get an execution by id")
   .argument("<id>", "Execution id")
+  .option("--include-data", "Include execution run data payload")
   .option("-p, --profile <name>", "Use named profile for this command")
-  .action(async (id: string, options: { profile?: string }) => {
-    await getExecution(id, options.profile);
+  .action(async (id: string, options: { includeData?: boolean; profile?: string }) => {
+    await getExecution(id, options.includeData, options.profile);
   });
 
 executions
