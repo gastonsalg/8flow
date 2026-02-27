@@ -13,10 +13,15 @@ export async function listExecutions(
   printResult(result);
 }
 
-export async function getExecution(id: string, profileName?: string): Promise<void> {
+export async function getExecution(
+  id: string,
+  includeData?: boolean,
+  profileName?: string,
+): Promise<void> {
   const profile = getProfile(profileName);
   const client = createClient(profile);
-  const result = await client.get(`/executions/${id}`);
+  const query = includeData ? { includeData: true } : undefined;
+  const result = await client.get(`/executions/${id}`, query);
   printResult(result);
 }
 

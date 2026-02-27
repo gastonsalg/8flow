@@ -6,7 +6,7 @@ import test from "node:test";
 import { authTest } from "../src/commands/auth.js";
 import { listWorkflows } from "../src/commands/workflows.js";
 import { createVariable } from "../src/commands/variables.js";
-import { listExecutions } from "../src/commands/executions.js";
+import { getExecution, listExecutions } from "../src/commands/executions.js";
 import { createProject } from "../src/commands/projects.js";
 import { rawRequest } from "../src/commands/raw.js";
 import { saveConfig } from "../src/config/store.js";
@@ -158,6 +158,22 @@ test("listExecutions passes query parameters", async () => {
 
   try {
     await listExecutions(["limit=2", "status=success"], "local");
+  } finally {
+    restore();
+  }
+});
+
+test("getExecution includeData adds includeData query parameter", async () => {
+  setupTempConfig();
+  const restore = mockFetch((req) => {
+    assert.equal(req.method, "GET");
+    assert.equal(req.url, "http://example.test/api/v1/executions/42?includeData=true");
+    assert.equal(req.headers.get("X-N8N-API-KEY"), "sk_local");
+    return { json: { id: "42" } };
+  });
+
+  try {
+    await getExecution("42", true, "local");
   } finally {
     restore();
   }
