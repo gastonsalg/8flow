@@ -1,5 +1,7 @@
 import fs from "node:fs";
 
+let defaultPretty = true;
+
 export function parseKeyValuePairs(pairs?: string[]): Record<string, string> {
   const result: Record<string, string> = {};
   if (!pairs) return result;
@@ -12,6 +14,10 @@ export function parseKeyValuePairs(pairs?: string[]): Record<string, string> {
     result[key] = value;
   }
   return result;
+}
+
+export function setDefaultPretty(pretty: boolean): void {
+  defaultPretty = pretty;
 }
 
 export function parseJsonInput(data?: string, filePath?: string): unknown {
@@ -97,7 +103,7 @@ function extractRowsForJsonl(result: unknown): unknown[] {
 
 export function printResult(
   result: unknown,
-  pretty = true,
+  pretty?: boolean,
   options?: { fields?: string[]; jsonl?: boolean },
 ): void {
   if (result === undefined) {
@@ -116,6 +122,7 @@ export function printResult(
     return;
   }
 
-  const output = pretty ? JSON.stringify(transformed, null, 2) : JSON.stringify(transformed);
+  const resolvedPretty = pretty ?? defaultPretty;
+  const output = resolvedPretty ? JSON.stringify(transformed, null, 2) : JSON.stringify(transformed);
   console.log(output);
 }

@@ -64,6 +64,12 @@ Use a specific profile without switching:
 n8n workflows list --profile <name>
 ```
 
+Print compact JSON across commands:
+
+```
+n8n --no-pretty workflows list
+```
+
 Test auth:
 
 ```
@@ -113,7 +119,7 @@ n8n workflows tags set <id> --file examples/workflows/tags/set.json
 
 - Phase 1 (implemented): `executions get --include-data`, `executions list --include-data`, `workflows get --exclude-pinned-data`.
 - Phase 2 (implemented for workflow/execution lists): output-shaping flags (`--fields`, `--jsonl`) with stable defaults.
-- Phase 3: add shared output controls (`--no-pretty` for non-raw commands) without breaking current behavior.
+- Phase 3 (implemented): shared output control via global `--no-pretty` for non-raw commands.
 - Phase 4: add convenience aliases for common deep-debug raw calls where API supports richer payload options.
 
 Credentials:
