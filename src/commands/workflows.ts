@@ -10,12 +10,14 @@ import {
 export async function listWorkflows(
   queryPairs?: string[],
   profileName?: string,
+  fields?: string[],
+  jsonl?: boolean,
 ): Promise<void> {
   const profile = getProfile(profileName);
   const client = createClient(profile);
   const query = parseKeyValuePairs(queryPairs);
   const result = await client.get("/workflows", query);
-  printResult(result);
+  printResult(result, true, { fields, jsonl });
 }
 
 export async function getWorkflow(
