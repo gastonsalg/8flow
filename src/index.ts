@@ -105,9 +105,11 @@ workflows
   .command("list")
   .description("List workflows")
   .option("-q, --query <pair...>", "Query parameters (key=value)")
+  .option("--fields <field...>", "Output fields (supports dotted paths)")
+  .option("--jsonl", "Print one JSON object per line")
   .option("-p, --profile <name>", "Use named profile for this command")
-  .action(async (options: { query?: string[]; profile?: string }) => {
-    await listWorkflows(options.query, options.profile);
+  .action(async (options: { query?: string[]; fields?: string[]; jsonl?: boolean; profile?: string }) => {
+    await listWorkflows(options.query, options.profile, options.fields, options.jsonl);
   });
 
 workflows
@@ -197,10 +199,20 @@ executions
   .description("List executions")
   .option("-q, --query <pair...>", "Query parameters (key=value)")
   .option("--include-data", "Include execution run data payloads")
+  .option("--fields <field...>", "Output fields (supports dotted paths)")
+  .option("--jsonl", "Print one JSON object per line")
   .option("-p, --profile <name>", "Use named profile for this command")
-  .action(async (options: { query?: string[]; includeData?: boolean; profile?: string }) => {
-    await listExecutions(options.query, options.profile, options.includeData);
-  });
+  .action(
+    async (options: { query?: string[]; includeData?: boolean; fields?: string[]; jsonl?: boolean; profile?: string }) => {
+      await listExecutions(
+        options.query,
+        options.profile,
+        options.includeData,
+        options.fields,
+        options.jsonl,
+      );
+    },
+  );
 
 executions
   .command("get")
