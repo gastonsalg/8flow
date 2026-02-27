@@ -29,6 +29,13 @@ export async function getExecution(
   printResult(result);
 }
 
+export async function debugExecution(id: string, profileName?: string): Promise<void> {
+  const profile = getProfile(profileName);
+  const client = createClient(profile);
+  const result = await client.get(`/executions/${id}`, { includeData: true });
+  printResult(result);
+}
+
 export async function deleteExecution(id: string, profileName?: string): Promise<void> {
   const profile = getProfile(profileName);
   const client = createClient(profile);
