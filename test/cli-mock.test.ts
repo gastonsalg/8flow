@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 import { authTest } from "../src/commands/auth.js";
-import { listWorkflows } from "../src/commands/workflows.js";
+import { getWorkflow, listWorkflows } from "../src/commands/workflows.js";
 import { createVariable } from "../src/commands/variables.js";
 import { getExecution, listExecutions } from "../src/commands/executions.js";
 import { createProject } from "../src/commands/projects.js";
@@ -106,6 +106,22 @@ test("listWorkflows passes query parameters", async () => {
   }
 });
 
+test("getWorkflow excludePinnedData adds excludePinnedData query parameter", async () => {
+  setupTempConfig();
+  const restore = mockFetch((req) => {
+    assert.equal(req.method, "GET");
+    assert.equal(req.url, "http://example.test/api/v1/workflows/88?excludePinnedData=true");
+    assert.equal(req.headers.get("X-N8N-API-KEY"), "sk_local");
+    return { json: { id: "88" } };
+  });
+
+  try {
+    await getWorkflow("88", true, "local");
+  } finally {
+    restore();
+  }
+});
+
 test("createVariable sends JSON body", async () => {
   setupTempConfig();
   const restore = mockFetch((req) => {
@@ -158,6 +174,22 @@ test("listExecutions passes query parameters", async () => {
 
   try {
     await listExecutions(["limit=2", "status=success"], "local");
+  } finally {
+    restore();
+  }
+});
+
+test("listExecutions includeData adds includeData query parameter", async () => {
+  setupTempConfig();
+  const restore = mockFetch((req) => {
+    assert.equal(req.method, "GET");
+    assert.equal(req.url, "http://example.test/api/v1/executions?limit=2&includeData=true");
+    assert.equal(req.headers.get("X-N8N-API-KEY"), "sk_local");
+    return { json: { data: [] } };
+  });
+
+  try {
+    await listExecutions(["limit=2"], "local", true);
   } finally {
     restore();
   }

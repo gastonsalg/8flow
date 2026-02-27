@@ -114,9 +114,10 @@ workflows
   .command("get")
   .description("Get a workflow by id")
   .argument("<id>", "Workflow id")
+  .option("--exclude-pinned-data", "Exclude workflow pinned data from response")
   .option("-p, --profile <name>", "Use named profile for this command")
-  .action(async (id: string, options: { profile?: string }) => {
-    await getWorkflow(id, options.profile);
+  .action(async (id: string, options: { excludePinnedData?: boolean; profile?: string }) => {
+    await getWorkflow(id, options.excludePinnedData, options.profile);
   });
 
 workflows
@@ -195,9 +196,10 @@ executions
   .command("list")
   .description("List executions")
   .option("-q, --query <pair...>", "Query parameters (key=value)")
+  .option("--include-data", "Include execution run data payloads")
   .option("-p, --profile <name>", "Use named profile for this command")
-  .action(async (options: { query?: string[]; profile?: string }) => {
-    await listExecutions(options.query, options.profile);
+  .action(async (options: { query?: string[]; includeData?: boolean; profile?: string }) => {
+    await listExecutions(options.query, options.profile, options.includeData);
   });
 
 executions
