@@ -97,6 +97,7 @@ n8n executions list --query limit=10 --include-data
 n8n executions list --fields id status --jsonl
 n8n executions get <id>
 n8n executions get <id> --include-data
+n8n executions debug <id>
 n8n executions retry <id>
 n8n executions delete <id>
 ```
@@ -114,13 +115,6 @@ n8n workflows deactivate <id>
 n8n workflows tags get <id>
 n8n workflows tags set <id> --file examples/workflows/tags/set.json
 ```
-
-## Flag roadmap
-
-- Phase 1 (implemented): `executions get --include-data`, `executions list --include-data`, `workflows get --exclude-pinned-data`.
-- Phase 2 (implemented for workflow/execution lists): output-shaping flags (`--fields`, `--jsonl`) with stable defaults.
-- Phase 3 (implemented): shared output control via global `--no-pretty` for non-raw commands.
-- Phase 4: add convenience aliases for common deep-debug raw calls where API supports richer payload options.
 
 Credentials:
 

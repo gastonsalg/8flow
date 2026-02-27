@@ -15,6 +15,7 @@ import {
   updateWorkflow,
 } from "./commands/workflows.js";
 import {
+  debugExecution,
   deleteExecution,
   getExecution,
   listExecutions,
@@ -230,6 +231,15 @@ executions
   .option("-p, --profile <name>", "Use named profile for this command")
   .action(async (id: string, options: { includeData?: boolean; profile?: string }) => {
     await getExecution(id, options.includeData, options.profile);
+  });
+
+executions
+  .command("debug")
+  .description("Get an execution with full run data (debug shortcut)")
+  .argument("<id>", "Execution id")
+  .option("-p, --profile <name>", "Use named profile for this command")
+  .action(async (id: string, options: { profile?: string }) => {
+    await debugExecution(id, options.profile);
   });
 
 executions
