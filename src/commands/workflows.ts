@@ -18,10 +18,15 @@ export async function listWorkflows(
   printResult(result);
 }
 
-export async function getWorkflow(id: string, profileName?: string): Promise<void> {
+export async function getWorkflow(
+  id: string,
+  excludePinnedData?: boolean,
+  profileName?: string,
+): Promise<void> {
   const profile = getProfile(profileName);
   const client = createClient(profile);
-  const result = await client.get(`/workflows/${id}`);
+  const query = excludePinnedData ? { excludePinnedData: true } : undefined;
+  const result = await client.get(`/workflows/${id}`, query);
   printResult(result);
 }
 

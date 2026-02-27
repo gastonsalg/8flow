@@ -5,10 +5,12 @@ import { parseKeyValuePairs, printResult } from "./helpers.js";
 export async function listExecutions(
   queryPairs?: string[],
   profileName?: string,
+  includeData?: boolean,
 ): Promise<void> {
   const profile = getProfile(profileName);
   const client = createClient(profile);
   const query = parseKeyValuePairs(queryPairs);
+  if (includeData) query.includeData = "true";
   const result = await client.get("/executions", query);
   printResult(result);
 }
