@@ -25,7 +25,7 @@ test("parseJsonInput accepts inline JSON", () => {
 });
 
 test("parseJsonInput accepts JSON file", () => {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "n8n-cli-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "8flow-"));
   const filePath = path.join(dir, "input.json");
   fs.writeFileSync(filePath, JSON.stringify({ file: true }));
 

@@ -14,7 +14,7 @@ import {
   upsertProfile,
 } from "../src/config/store.js";
 
-const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), "n8n-cli-config-"));
+const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), "8flow-config-"));
 process.env.XDG_CONFIG_HOME = tmpRoot;
 
 const profile = {
