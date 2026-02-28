@@ -28,6 +28,20 @@ test("loadConfig initializes empty store", () => {
   assert.equal(config.profiles.length, 0);
 });
 
+test("loadConfig migrates legacy n8n-cli config path", () => {
+  const currentPath = path.join(tmpRoot, "8flow", "config.json");
+  const legacyDir = path.join(tmpRoot, "n8n-cli");
+  const legacyPath = path.join(legacyDir, "config.json");
+  fs.rmSync(currentPath, { force: true });
+  fs.mkdirSync(legacyDir, { recursive: true });
+  fs.writeFileSync(legacyPath, JSON.stringify({ profiles: [profile], activeProfile: "local" }, null, 2));
+
+  const config = loadConfig();
+  assert.equal(config.activeProfile, "local");
+  assert.equal(config.profiles[0]?.name, "local");
+  assert.equal(fs.existsSync(currentPath), true);
+});
+
 test("saveConfig and loadConfig roundtrip", () => {
   saveConfig({ profiles: [profile], activeProfile: "local" });
   const config = loadConfig();
