@@ -41,7 +41,7 @@ export async function addProfile(): Promise<void> {
 export function listProfiles(): void {
   const config = loadConfig();
   if (config.profiles.length === 0) {
-    console.log("No profiles found. Use `n8n profiles add` to create one.");
+    console.log("No profiles found. Use `8flow profiles add` to create one.");
     return;
   }
 

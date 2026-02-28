@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "bin": {
-    "n8n": "dist/index.js"
+    "8flow": "dist/index.js"
   },
   "directories": {
     "doc": "docs"

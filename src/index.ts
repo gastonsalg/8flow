@@ -56,7 +56,7 @@ import { setDefaultPretty } from "./commands/helpers.js";
 const program = new Command();
 
 program
-  .name("n8n")
+  .name("8flow")
   .description("CLI for n8n instances")
   .option("--no-pretty", "Print compact JSON for all commands")
   .version("0.1.0");

@@ -29,7 +29,7 @@ For a local CLI install:
 ```
 npm run build
 npm link
-n8n --help
+8flow --help
 ```
 
 Publishing note: `prepublishOnly` runs `npm run build` to ensure `dist/` is up to date.
@@ -43,135 +43,135 @@ npm test
 Add a profile:
 
 ```
-n8n profiles add
+8flow profiles add
 ```
 
 List profiles:
 
 ```
-n8n profiles list
+8flow profiles list
 ```
 
 Set active profile:
 
 ```
-n8n profiles use <name>
+8flow profiles use <name>
 ```
 
 Use a specific profile without switching:
 
 ```
-n8n workflows list --profile <name>
+8flow workflows list --profile <name>
 ```
 
 Print compact JSON across commands:
 
 ```
-n8n --no-pretty workflows list
+8flow --no-pretty workflows list
 ```
 
 Test auth:
 
 ```
-n8n auth test
+8flow auth test
 ```
 
 List workflows:
 
 ```
-n8n workflows list
+8flow workflows list
 ```
 
 Raw requests (any endpoint):
 
 ```
-n8n raw GET /workflows
-n8n raw POST /tags --data '{"name":"Ops"}'
+8flow raw GET /workflows
+8flow raw POST /tags --data '{"name":"Ops"}'
 ```
 
 Executions:
 
 ```
-n8n executions list --query limit=10
-n8n executions list --query limit=10 --include-data
-n8n executions list --fields id status --jsonl
-n8n executions get <id>
-n8n executions get <id> --include-data
-n8n executions debug <id>
-n8n executions retry <id>
-n8n executions delete <id>
+8flow executions list --query limit=10
+8flow executions list --query limit=10 --include-data
+8flow executions list --fields id status --jsonl
+8flow executions get <id>
+8flow executions get <id> --include-data
+8flow executions debug <id>
+8flow executions retry <id>
+8flow executions delete <id>
 ```
 
 Workflows:
 
 ```
-n8n workflows get <id>
-n8n workflows get <id> --exclude-pinned-data
-n8n workflows list --fields id name active --jsonl
-n8n workflows create --file examples/workflows/create.json
-n8n workflows update <id> --file examples/workflows/update.json
-n8n workflows activate <id>
-n8n workflows deactivate <id>
-n8n workflows tags get <id>
-n8n workflows tags set <id> --file examples/workflows/tags/set.json
+8flow workflows get <id>
+8flow workflows get <id> --exclude-pinned-data
+8flow workflows list --fields id name active --jsonl
+8flow workflows create --file examples/workflows/create.json
+8flow workflows update <id> --file examples/workflows/update.json
+8flow workflows activate <id>
+8flow workflows deactivate <id>
+8flow workflows tags get <id>
+8flow workflows tags set <id> --file examples/workflows/tags/set.json
 ```
 
 Credentials:
 
 ```
-n8n credentials schema <credentialTypeName>
-n8n credentials create --file examples/credentials/create.json
-n8n credentials update <id> --file examples/credentials/update.json
-n8n credentials delete <id>
+8flow credentials schema <credentialTypeName>
+8flow credentials create --file examples/credentials/create.json
+8flow credentials update <id> --file examples/credentials/update.json
+8flow credentials delete <id>
 ```
 
 Tags:
 
 ```
-n8n tags list
-n8n tags get <id>
-n8n tags create --file examples/tags/create.json
-n8n tags update <id> --file examples/tags/update.json
-n8n tags delete <id>
+8flow tags list
+8flow tags get <id>
+8flow tags create --file examples/tags/create.json
+8flow tags update <id> --file examples/tags/update.json
+8flow tags delete <id>
 ```
 
 Variables:
 
 ```
-n8n variables list
-n8n variables create --file examples/variables/create.json
-n8n variables update <id> --file examples/variables/update.json
-n8n variables delete <id>
+8flow variables list
+8flow variables create --file examples/variables/create.json
+8flow variables update <id> --file examples/variables/update.json
+8flow variables delete <id>
 ```
 
 Projects:
 
 ```
-n8n projects list
-n8n projects create --file examples/projects/create.json
-n8n projects update <projectId> --file examples/projects/update.json
-n8n projects delete <projectId>
-n8n projects users add <projectId> --data '{"userId":"1","role":"admin"}'
-n8n projects users update <projectId> <userId> --data '{"role":"member"}'
-n8n projects users remove <projectId> <userId>
+8flow projects list
+8flow projects create --file examples/projects/create.json
+8flow projects update <projectId> --file examples/projects/update.json
+8flow projects delete <projectId>
+8flow projects users add <projectId> --data '{"userId":"1","role":"admin"}'
+8flow projects users update <projectId> <userId> --data '{"role":"member"}'
+8flow projects users remove <projectId> <userId>
 ```
 
 Data Tables:
 
 ```
-n8n data-tables list
-n8n data-tables create --file examples/data-tables/create.json
-n8n data-tables get <dataTableId>
-n8n data-tables update <dataTableId> --file examples/data-tables/update.json
-n8n data-tables rows list <dataTableId>
-n8n data-tables rows insert <dataTableId> --file examples/data-tables/rows/insert.json
-n8n data-tables rows update <dataTableId> --file examples/data-tables/rows/update.json
-n8n data-tables rows upsert <dataTableId> --file examples/data-tables/rows/upsert.json
-n8n data-tables rows delete <dataTableId> --file examples/data-tables/rows/delete.json
+8flow data-tables list
+8flow data-tables create --file examples/data-tables/create.json
+8flow data-tables get <dataTableId>
+8flow data-tables update <dataTableId> --file examples/data-tables/update.json
+8flow data-tables rows list <dataTableId>
+8flow data-tables rows insert <dataTableId> --file examples/data-tables/rows/insert.json
+8flow data-tables rows update <dataTableId> --file examples/data-tables/rows/update.json
+8flow data-tables rows upsert <dataTableId> --file examples/data-tables/rows/upsert.json
+8flow data-tables rows delete <dataTableId> --file examples/data-tables/rows/delete.json
 ```
 
 Source Control:
 
 ```
-n8n source-control pull
+8flow source-control pull
 ```
