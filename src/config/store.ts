@@ -78,9 +78,9 @@ export function setActiveProfile(name: string): ConfigStore {
 
 export function getActiveProfile(): Profile {
   const config = loadConfig();
-  if (!config.activeProfile) throw new Error("No active profile set. Use `n8n profiles use <name>`.");
+  if (!config.activeProfile) throw new Error("No active profile set. Use `8flow profiles use <name>`.");
   const profile = config.profiles.find((p) => p.name === config.activeProfile);
-  if (!profile) throw new Error("Active profile is missing. Use `n8n profiles list` to inspect.");
+  if (!profile) throw new Error("Active profile is missing. Use `8flow profiles list` to inspect.");
   return profile;
 }
 
