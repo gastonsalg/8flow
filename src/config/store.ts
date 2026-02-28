@@ -4,29 +4,24 @@ import path from "node:path";
 import { ConfigStore, Profile } from "./types.js";
 
 const CONFIG_DIR_NAME = "8flow";
-const LEGACY_CONFIG_DIR_NAME = "n8n-cli";
 const CONFIG_FILE_NAME = "config.json";
 
 const DEFAULT_CONFIG: ConfigStore = { profiles: [] };
 
-function getConfigDir(dirName = CONFIG_DIR_NAME): string {
+function getConfigDir(): string {
   const platform = process.platform;
   if (platform === "win32") {
     const appData = process.env.APPDATA;
-    return appData ? path.join(appData, dirName) : path.join(os.homedir(), dirName);
+    return appData ? path.join(appData, CONFIG_DIR_NAME) : path.join(os.homedir(), CONFIG_DIR_NAME);
   }
 
   const xdg = process.env.XDG_CONFIG_HOME;
-  if (xdg) return path.join(xdg, dirName);
-  return path.join(os.homedir(), ".config", dirName);
+  if (xdg) return path.join(xdg, CONFIG_DIR_NAME);
+  return path.join(os.homedir(), ".config", CONFIG_DIR_NAME);
 }
 
 export function getConfigPath(): string {
   return path.join(getConfigDir(), CONFIG_FILE_NAME);
-}
-
-function getLegacyConfigPath(): string {
-  return path.join(getConfigDir(LEGACY_CONFIG_DIR_NAME), CONFIG_FILE_NAME);
 }
 
 function ensureConfigDir(): void {
@@ -37,22 +32,7 @@ function ensureConfigDir(): void {
 export function loadConfig(): ConfigStore {
   ensureConfigDir();
   const filePath = getConfigPath();
-  if (!fs.existsSync(filePath)) {
-    const legacyPath = getLegacyConfigPath();
-    if (fs.existsSync(legacyPath)) {
-      try {
-        const raw = fs.readFileSync(legacyPath, "utf8");
-        const parsed = JSON.parse(raw) as ConfigStore;
-        if (parsed.profiles) {
-          saveConfig(parsed);
-          return parsed;
-        }
-      } catch {
-        // Ignore legacy parse failures and return a fresh config.
-      }
-    }
-    return { ...DEFAULT_CONFIG };
-  }
+  if (!fs.existsSync(filePath)) return { ...DEFAULT_CONFIG };
 
   try {
     const raw = fs.readFileSync(filePath, "utf8");
