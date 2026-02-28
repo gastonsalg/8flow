@@ -1,4 +1,4 @@
-# Add Global Dry-Run Safety Mode for Mutating Commands
+# Add Multi-Phase Safety Roadmap for 8flow Operations
 
 This ExecPlan is a living document. The sections `Progress`, `Surprises & Discoveries`, `Decision Log`, and `Outcomes & Retrospective` must be kept up to date as work proceeds.
 
@@ -6,11 +6,12 @@ This document must be maintained in accordance with `.agent/PLANS.md`.
 
 ## Purpose / Big Picture
 
-After this change, users can run any write operation in `8flow` with a dry-run switch that validates input and prints the HTTP request that would be sent, without changing anything in n8n. This adds a safety layer for production usage and makes change previews auditable. A user can prove it works by running a create or delete command with `--dry-run` and seeing a dry-run report with method, endpoint, query, and body while no network call is made.
+After these changes, users can safely operate `8flow` in higher-risk environments through a staged safety model: dry-run previews first, then environment targeting controls, then stronger guardrails and auditability. Phase 1 delivers immediate no-op request previews for write operations. Later phases build on that baseline to reduce accidental production changes and improve operational traceability. A user can prove progress incrementally by validating each phase’s acceptance criteria in this document.
 
 ## Progress
 
 - [x] (2026-02-28 11:24Z) Created this ExecPlan for Phase 1 dry-run safety mode.
+- [x] (2026-02-28 11:56Z) Expanded this ExecPlan to include full planned safety roadmap (Phases 1-4) so future work is not lost.
 - [ ] Add a global dry-run runtime flag and helper utilities.
 - [ ] Thread dry-run behavior through all mutating command handlers.
 - [ ] Add dry-run support to `raw` for mutating HTTP methods.
@@ -29,7 +30,10 @@ After this change, users can run any write operation in `8flow` with a dry-run s
 
 ## Decision Log
 
-- Decision: Phase 1 will implement dry-run only; config-file targeting and environment policy guardrails are explicitly deferred to a later plan.
+- Decision: Keep one living ExecPlan that includes all planned safety phases, while implementing and validating one phase at a time.
+  Rationale: Preserves long-term intent in-repo and avoids losing roadmap context across threads.
+  Date/Author: 2026-02-28 / Codex
+- Decision: Phase 1 will implement dry-run first; environment targeting and policy guardrails follow in subsequent phases.
   Rationale: `--dry-run` is highest-impact and lowest-risk, and it can be added without changing profile storage format.
   Date/Author: 2026-02-28 / Codex
 - Decision: Dry-run output will show a deterministic request preview (`method`, resolved path/query, target base URL, body/headers with API key redacted) and exit with success.
@@ -41,7 +45,7 @@ After this change, users can run any write operation in `8flow` with a dry-run s
 
 ## Outcomes & Retrospective
 
-This plan is in draft state. No dry-run behavior has been implemented yet. Expected outcome is a safe no-op preview path for every mutating command, with tests verifying that dry-run never reaches `fetch`.
+This plan is in draft state. No dry-run behavior has been implemented yet. Expected outcome is a complete safety roadmap executed in phases, starting with a safe no-op preview path for every mutating command and then adding stronger environment controls and guardrails.
 
 ## Context and Orientation
 
@@ -73,13 +77,45 @@ Mutating command coverage in current CLI surface:
 
 ## Plan of Work
 
-Milestone 1 establishes the dry-run runtime contract. Add a global `--dry-run` option in `src/index.ts`, similar to `--no-pretty`, and persist it in shared runtime helper state available to all command modules. Define a single function for printing dry-run previews so output format stays consistent.
+Milestone 1 (Phase 1) establishes the dry-run runtime contract. Add a global `--dry-run` option in `src/index.ts`, similar to `--no-pretty`, and persist it in shared runtime helper state available to all command modules. Define a single function for printing dry-run previews so output format stays consistent.
 
 Milestone 2 applies dry-run behavior to mutating commands. For each mutating action in `src/commands/*`, keep current validation and payload parsing, but branch before network execution: if dry-run is enabled, print preview and return. Read-only commands must continue normal behavior regardless of `--dry-run`.
 
 Milestone 3 covers `raw` command parity and tests. `raw` with `POST/PUT/PATCH/DELETE` should respect dry-run and print preview; `GET` remains live and should print a note that dry-run is not applicable. Add tests that verify a dry-run mutating command produces preview output and does not call `fetch`.
 
-Milestone 4 updates docs and final validation. Update README with global flag docs and examples, then run full tests and build. Record proof in this plan.
+Milestone 4 updates docs and final validation for Phase 1. Update README with global flag docs and examples, then run full tests and build. Record proof in this plan.
+
+Milestone 5 (Phase 2) adds explicit target context controls. Introduce optional command context inputs (for example `--config <file>` and/or profile metadata such as environment labels) and print target identity clearly for mutating commands. Ensure dry-run previews include this target context.
+
+Milestone 6 (Phase 3) adds production guardrails. Add optional confirmation/policy switches for risky targets (for example require `--yes` or `--allow-prod` when operating against profiles marked as production). Keep these guardrails deterministic and scriptable.
+
+Milestone 7 (Phase 4) adds operational audit ergonomics. Add machine-readable safety logs or structured output mode for request previews and applied operations, so CI and agent tooling can capture immutable intent/execution records.
+
+## Multi-Phase Roadmap
+
+Phase 1: Global dry-run preview for mutating operations.
+
+- Scope: add `--dry-run`, no-op previews, and no-network guarantees for mutating commands.
+- Deliverable: all mutating commands can be safely simulated.
+- Acceptance: dry-run tests pass and no `fetch` call occurs in dry-run paths.
+
+Phase 2: Explicit environment/target context.
+
+- Scope: define and expose target context consistently (profile metadata and/or `--config` input).
+- Deliverable: mutating operations show unambiguous target identity before execution.
+- Acceptance: user can see and verify target context in both dry-run and live modes.
+
+Phase 3: Policy guardrails for high-risk targets.
+
+- Scope: configurable protection for production-like targets (confirmation or explicit allow flags).
+- Deliverable: accidental live mutation risk is reduced by default guardrails.
+- Acceptance: mutating command against protected target fails fast without required override.
+
+Phase 4: Audit and automation hardening.
+
+- Scope: structured safety output and audit-friendly logs for automation/agent workflows.
+- Deliverable: CI and agent systems can parse previews and executions deterministically.
+- Acceptance: machine-readable output is stable and documented.
 
 ## Concrete Steps
 
@@ -159,6 +195,12 @@ Expected non-goals for Phase 1:
 - No profile schema change.
 - No config file (`--config`) feature yet.
 - No interactive confirmation prompts yet.
+
+Expected future work beyond Phase 1:
+
+- Phase 2: target/context model and optional `--config`.
+- Phase 3: production guardrail policies.
+- Phase 4: audit/structured safety output.
 
 ## Interfaces and Dependencies
 
