@@ -123,7 +123,7 @@ Run all commands from repository root (`<repo-root>`).
 
 1. Create a feature branch:
 
-    git checkout -b codex/feature/dry-run-safety-phase1
+    git checkout -b codex/feature/operations-safety-roadmap
 
 2. Add runtime dry-run state and helpers:
 
