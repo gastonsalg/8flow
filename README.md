@@ -6,6 +6,28 @@ API compatibility: targets the n8n Public API at `/api/v1` as defined by `docs/n
 
 Disclaimer: This is an unofficial community project and is not affiliated with, endorsed by, or sponsored by n8n GmbH.
 
+## Why 8flow?
+
+`8flow` exists to make n8n instance operations scriptable and repeatable from the terminal.
+
+The n8n web UI is great for interactive work, but it is not ideal for automation tasks such as CI jobs, environment-to-environment promotion, or repeatable operational runbooks. `8flow` provides a single CLI surface over the n8n Public API so the same actions can be run consistently across local, staging, and production profiles.
+
+In practice, this gives you:
+
+- profile-based multi-instance management (`8flow profiles ...`)
+- direct API access when needed (`8flow raw ...`)
+- command-level operations for common resources (workflows, credentials, tags, variables, projects, data tables, source control)
+- JSON-friendly output that works well in scripts and pipelines
+- safer automation for AI agents and scripts than ad-hoc `curl` (shared command contracts, fewer header/URL mistakes)
+
+### Use cases
+
+- Verify auth and connectivity for each environment in CI before deployment steps.
+- Run repeatable workflow operations across dev/staging/prod without manually switching in the UI.
+- Apply bulk maintenance tasks (for example tags, variables, or execution cleanup) through scripted CLI runs.
+- Keep operational runbooks as executable shell commands instead of click-by-click UI instructions.
+- Troubleshoot or automate endpoints not yet wrapped by typed commands using `8flow raw`.
+
 ## Setup
 
 Install dependencies:
