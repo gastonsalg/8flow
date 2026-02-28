@@ -1,4 +1,4 @@
-# n8n-cli
+# 8flow
 
 Simple CLI for interacting with n8n instances using API keys.
 

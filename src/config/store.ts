@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import { ConfigStore, Profile } from "./types.js";
 
-const CONFIG_DIR_NAME = "n8n-cli";
+const CONFIG_DIR_NAME = "8flow";
 const CONFIG_FILE_NAME = "config.json";
 
 const DEFAULT_CONFIG: ConfigStore = { profiles: [] };

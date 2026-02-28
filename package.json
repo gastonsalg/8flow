@@ -1,5 +1,5 @@
 {
-  "name": "n8n-unofficial-cli",
+  "name": "8flow",
   "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",

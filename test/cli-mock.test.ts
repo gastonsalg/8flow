@@ -38,7 +38,7 @@ type MockResponse = {
 };
 
 function setupTempConfig(): void {
-  const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), "n8n-cli-mock-"));
+  const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), "8flow-mock-"));
   process.env.XDG_CONFIG_HOME = tmpRoot;
   saveConfig({ profiles: [baseProfile, altProfile], activeProfile: "local" });
 }
