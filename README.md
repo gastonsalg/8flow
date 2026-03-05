@@ -130,6 +130,8 @@ Workflows:
 8flow workflows get <id>
 8flow workflows get <id> --exclude-pinned-data
 8flow workflows list --fields id name active --jsonl
+8flow workflows validate --file examples/workflows/update.json
+8flow workflows validate --id <id> --server
 8flow workflows create --file examples/workflows/create.json
 8flow workflows update <id> --file examples/workflows/update.json
 8flow workflows activate <id>
