@@ -13,6 +13,7 @@ import {
   listWorkflows,
   setWorkflowTags,
   updateWorkflow,
+  validateWorkflow,
 } from "./commands/workflows.js";
 import {
   debugExecution,
@@ -151,6 +152,20 @@ workflows
   .action(async (id: string, options: { data?: string; file?: string; profile?: string }) => {
     await updateWorkflow(id, options.data, options.file, options.profile);
   });
+
+workflows
+  .command("validate")
+  .description("Validate a workflow payload locally, with optional server-backed checks")
+  .option("--id <id>", "Validate an existing workflow by id")
+  .option("-d, --data <json>", "Inline JSON body")
+  .option("-f, --file <path>", "Path to JSON file")
+  .option("--server", "Run server-backed checks (non-mutating)")
+  .option("-p, --profile <name>", "Use named profile for this command")
+  .action(
+    async (options: { id?: string; data?: string; file?: string; server?: boolean; profile?: string }) => {
+      await validateWorkflow(options);
+    },
+  );
 
 workflows
   .command("delete")
