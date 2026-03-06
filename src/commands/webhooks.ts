@@ -12,12 +12,15 @@ function resolveWebhookUrl(target: string, baseUrl: string): string {
 async function parseWebhookResponse(response: Response): Promise<unknown> {
   if (response.status === 204) return undefined;
 
+  const raw = await response.text();
+  if (raw.trim().length === 0) return undefined;
+
   const contentType = response.headers.get("content-type") ?? "";
   if (contentType.includes("application/json")) {
-    return (await response.json()) as unknown;
+    return JSON.parse(raw) as unknown;
   }
 
-  return await response.text();
+  return raw;
 }
 
 export async function triggerWebhook(

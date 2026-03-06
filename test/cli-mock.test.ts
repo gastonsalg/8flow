@@ -287,6 +287,24 @@ test("triggerWebhook accepts absolute URLs and text responses", async () => {
   }
 });
 
+test("triggerWebhook treats empty JSON responses as success without parse errors", async () => {
+  setupTempConfig();
+  const restore = mockFetch((req) => {
+    assert.equal(req.method, "POST");
+    assert.equal(req.url, "http://example.test/webhook/empty-json");
+    return { body: "", headers: { "Content-Type": "application/json" } };
+  });
+
+  try {
+    await triggerWebhook("/webhook/empty-json", {
+      profile: "local",
+      pretty: false,
+    });
+  } finally {
+    restore();
+  }
+});
+
 test("triggerWebhook rejects wait and follow until execution polling is implemented", async () => {
   setupTempConfig();
 
