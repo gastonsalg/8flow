@@ -124,6 +124,16 @@ Executions:
 8flow executions delete <id>
 ```
 
+Workflow triggers:
+
+```
+8flow workflows trigger webhook --path /webhook/my-test --data '{"mode":"dry_run"}'
+8flow workflows trigger webhook --path /webhook/my-test --data-file payload.json --query source=cli
+8flow workflows trigger webhook --path https://n8n.example.com/webhook/my-test --data '{"mode":"live"}'
+```
+
+`--wait` and `--follow` are reserved for future execution polling. The current webhook trigger command returns the immediate HTTP response only.
+
 Workflows:
 
 ```

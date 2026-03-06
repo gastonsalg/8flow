@@ -15,6 +15,7 @@ import {
   updateWorkflow,
   validateWorkflow,
 } from "./commands/workflows.js";
+import { triggerWebhook } from "./commands/webhooks.js";
 import {
   debugExecution,
   deleteExecution,
@@ -215,6 +216,39 @@ workflowTags
   .action(async (id: string, options: { data?: string; file?: string; profile?: string }) => {
     await setWorkflowTags(id, options.data, options.file, options.profile);
   });
+
+const workflowTrigger = workflows.command("trigger").description("Trigger workflows through explicit execution surfaces");
+
+workflowTrigger
+  .command("webhook")
+  .description("Trigger a workflow through a webhook path or full URL")
+  .requiredOption("--path <path-or-url>", "Webhook path or full URL")
+  .option("-X, --method <method>", "HTTP method", "POST")
+  .option("-d, --data <json>", "Inline JSON body")
+  .option("-f, --file <path>", "Path to JSON file")
+  .option("--data-file <path>", "Path to JSON file")
+  .option("-q, --query <pair...>", "Query parameters (key=value)")
+  .option("-H, --header <pair...>", "HTTP headers (key=value)")
+  .option("--wait", "Reserved for polling execution state after the webhook response")
+  .option("--follow", "Reserved for streaming execution progress after the webhook response")
+  .option("-p, --profile <name>", "Use named profile for this command")
+  .action(
+    async (options: {
+      path: string;
+      method?: string;
+      data?: string;
+      file?: string;
+      dataFile?: string;
+      query?: string[];
+      header?: string[];
+      pretty?: boolean;
+      profile?: string;
+      wait?: boolean;
+      follow?: boolean;
+    }) => {
+      await triggerWebhook(options.path, options);
+    },
+  );
 
 const executions = program.command("executions").description("Execution commands");
 
