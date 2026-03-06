@@ -269,6 +269,24 @@ test("triggerWebhook resolves profile-relative paths outside /api/v1", async () 
   }
 });
 
+test("triggerWebhook treats a bare path value as a webhook id", async () => {
+  setupTempConfig();
+  const restore = mockFetch((req) => {
+    assert.equal(req.method, "POST");
+    assert.equal(req.url, "http://example.test/webhook/email-report-orchestrator-v1");
+    return { json: { ok: true } };
+  });
+
+  try {
+    await triggerWebhook("email-report-orchestrator-v1", {
+      profile: "local",
+      pretty: false,
+    });
+  } finally {
+    restore();
+  }
+});
+
 test("triggerWebhook accepts absolute URLs and text responses", async () => {
   setupTempConfig();
   const restore = mockFetch((req) => {

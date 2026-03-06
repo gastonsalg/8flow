@@ -2,10 +2,18 @@ import { normalizeInstanceUrl } from "../api/client.js";
 import { getProfile } from "../config/store.js";
 import { parseJsonInput, parseKeyValuePairs, printResult } from "./helpers.js";
 
+function looksLikeExplicitWebhookPath(target: string): boolean {
+  return target.startsWith("/webhook/") || target.startsWith("/webhook-test/");
+}
+
 function resolveWebhookUrl(target: string, baseUrl: string): string {
   if (/^https?:\/\//i.test(target)) return target;
   const instanceUrl = normalizeInstanceUrl(baseUrl);
-  const normalizedTarget = target.startsWith("/") ? target : `/${target}`;
+  const normalizedTarget = looksLikeExplicitWebhookPath(target)
+    ? target
+    : target.startsWith("/")
+      ? target
+      : `/webhook/${target}`;
   return `${instanceUrl}${normalizedTarget}`;
 }
 
