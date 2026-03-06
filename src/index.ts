@@ -221,8 +221,11 @@ const workflowTrigger = workflows.command("trigger").description("Trigger workfl
 
 workflowTrigger
   .command("webhook")
-  .description("Trigger a workflow through a webhook path or full URL")
-  .requiredOption("--path <path-or-url>", "Webhook path or full URL")
+  .description("Trigger a workflow through a webhook id, webhook path, or full URL")
+  .requiredOption(
+    "--path <path-or-url>",
+    "Webhook id, /webhook/... path, /webhook-test/... path, or full URL",
+  )
   .option("-X, --method <method>", "HTTP method", "POST")
   .option("-d, --data <json>", "Inline JSON body")
   .option("-f, --file <path>", "Path to JSON file")

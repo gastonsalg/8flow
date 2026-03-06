@@ -127,10 +127,14 @@ Executions:
 Workflow triggers:
 
 ```
+8flow workflows trigger webhook --path email-report-orchestrator-v1 --data '{"mode":"dry_run"}'
 8flow workflows trigger webhook --path /webhook/my-test --data '{"mode":"dry_run"}'
+8flow workflows trigger webhook --path /webhook-test/my-test --data '{"mode":"dry_run"}'
 8flow workflows trigger webhook --path /webhook/my-test --data-file payload.json --query source=cli
 8flow workflows trigger webhook --path https://n8n.example.com/webhook/my-test --data '{"mode":"live"}'
 ```
+
+Bare `--path` values are treated as webhook ids and resolved to `/webhook/<value>` on the selected profile base URL. Use an explicit `/webhook/...`, `/webhook-test/...`, or a full URL when you need a different route.
 
 `--wait` and `--follow` are reserved for future execution polling. The current webhook trigger command returns the immediate HTTP response only.
 
