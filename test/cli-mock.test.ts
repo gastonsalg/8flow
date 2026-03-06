@@ -9,6 +9,7 @@ import { createVariable } from "../src/commands/variables.js";
 import { debugExecution, getExecution, listExecutions } from "../src/commands/executions.js";
 import { createProject } from "../src/commands/projects.js";
 import { rawRequest } from "../src/commands/raw.js";
+import { triggerWebhook } from "../src/commands/webhooks.js";
 import { saveConfig } from "../src/config/store.js";
 
 const baseProfile = {
@@ -242,4 +243,68 @@ test("createProject sends JSON body", async () => {
   } finally {
     restore();
   }
+});
+
+test("triggerWebhook resolves profile-relative paths outside /api/v1", async () => {
+  setupTempConfig();
+  const restore = mockFetch((req) => {
+    assert.equal(req.method, "POST");
+    assert.equal(req.url, "http://example.test/webhook/demo?mode=dry_run");
+    assert.equal(req.headers.get("X-Test"), "1");
+    assert.equal(req.headers.get("Content-Type"), "application/json");
+    assert.equal(req.body, JSON.stringify({ hello: "world" }));
+    return { json: { ok: true } };
+  });
+
+  try {
+    await triggerWebhook("/webhook/demo", {
+      data: "{\"hello\":\"world\"}",
+      header: ["X-Test=1"],
+      query: ["mode=dry_run"],
+      pretty: false,
+      profile: "local",
+    });
+  } finally {
+    restore();
+  }
+});
+
+test("triggerWebhook accepts absolute URLs and text responses", async () => {
+  setupTempConfig();
+  const restore = mockFetch((req) => {
+    assert.equal(req.method, "POST");
+    assert.equal(req.url, "https://hooks.example.test/webhook/live");
+    return { body: "accepted", headers: { "Content-Type": "text/plain" } };
+  });
+
+  try {
+    await triggerWebhook("https://hooks.example.test/webhook/live", {
+      profile: "local",
+      pretty: false,
+    });
+  } finally {
+    restore();
+  }
+});
+
+test("triggerWebhook rejects wait and follow until execution polling is implemented", async () => {
+  setupTempConfig();
+
+  await assert.rejects(
+    () =>
+      triggerWebhook("/webhook/demo", {
+        wait: true,
+        profile: "local",
+      }),
+    /Webhook trigger polling is not implemented yet/,
+  );
+
+  await assert.rejects(
+    () =>
+      triggerWebhook("/webhook/demo", {
+        follow: true,
+        profile: "local",
+      }),
+    /Webhook trigger polling is not implemented yet/,
+  );
 });

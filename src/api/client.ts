@@ -22,10 +22,14 @@ export type RequestOptions = {
   body?: unknown;
 };
 
-function normalizeBaseUrl(baseUrl: string): string {
+export function normalizeInstanceUrl(baseUrl: string): string {
   const trimmed = baseUrl.replace(/\/$/, "");
-  if (trimmed.endsWith("/api/v1")) return trimmed;
-  return `${trimmed}/api/v1`;
+  return trimmed.endsWith("/api/v1") ? trimmed.slice(0, -"/api/v1".length) : trimmed;
+}
+
+function normalizeBaseUrl(baseUrl: string): string {
+  const instanceUrl = normalizeInstanceUrl(baseUrl);
+  return `${instanceUrl}/api/v1`;
 }
 
 function toQueryString(

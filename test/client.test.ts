@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createClient } from "../src/api/client.js";
+import { createClient, normalizeInstanceUrl } from "../src/api/client.js";
 
 const profile = {
   name: "local",
@@ -34,4 +34,9 @@ test("createClient builds URLs and headers", async () => {
   } finally {
     global.fetch = originalFetch;
   }
+});
+
+test("normalizeInstanceUrl strips public api suffix", () => {
+  assert.equal(normalizeInstanceUrl("http://localhost:5678/api/v1"), "http://localhost:5678");
+  assert.equal(normalizeInstanceUrl("http://localhost:5678/"), "http://localhost:5678");
 });
