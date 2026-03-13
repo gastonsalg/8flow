@@ -71,8 +71,19 @@ export const dataTableInsertRowsSchema = z.object({
   returnType: z.string().optional(),
 });
 
+const dataTableRowFilterConditionSchema = z.object({
+  columnName: nonEmptyString,
+  condition: z.enum(["eq", "neq", "like", "ilike", "gt", "gte", "lt", "lte"]),
+  value: z.any(),
+});
+
+const dataTableRowFilterSchema = z.object({
+  type: z.enum(["and", "or"]).optional().default("and"),
+  filters: z.array(dataTableRowFilterConditionSchema).min(1, "At least one filter condition is required"),
+});
+
 export const dataTableUpdateRowsSchema = z.object({
-  filter: z.record(z.any()),
+  filter: dataTableRowFilterSchema,
   data: z.record(z.any()),
   returnData: z.boolean().optional(),
   dryRun: z.boolean().optional(),

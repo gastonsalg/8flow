@@ -208,6 +208,22 @@ Data Tables:
 8flow data-tables rows delete <dataTableId> --file examples/data-tables/rows/delete.json
 ```
 
+`rows update` and `rows upsert` require a predicate-style `filter` object plus `data`. For a single row id:
+
+```json
+{
+  "filter": {
+    "type": "and",
+    "filters": [
+      { "columnName": "id", "condition": "eq", "value": "row-id" }
+    ]
+  },
+  "data": {
+    "wifo_economic_climate": "Improving"
+  }
+}
+```
+
 Source Control:
 
 ```
