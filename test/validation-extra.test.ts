@@ -53,6 +53,21 @@ test("dataTableUpdateRowsSchema requires filter/data", () => {
     }
   );
   assert.throws(() => dataTableUpdateRowsSchema.parse({}), /Required/);
+  assert.deepEqual(
+    dataTableUpdateRowsSchema.parse({
+      filter: {
+        filters: [{ columnName: "id", condition: "eq", value: 1 }],
+      },
+      data: { name: "x" },
+    }),
+    {
+      filter: {
+        type: "and",
+        filters: [{ columnName: "id", condition: "eq", value: 1 }],
+      },
+      data: { name: "x" },
+    }
+  );
   assert.throws(
     () => dataTableUpdateRowsSchema.parse({ filter: { id: 1 }, data: { name: "x" } }),
     /Required|Invalid enum value/
@@ -77,4 +92,19 @@ test("dataTableUpsertRowsSchema requires filter/data", () => {
     }
   );
   assert.throws(() => dataTableUpsertRowsSchema.parse({}), /Required/);
+  assert.deepEqual(
+    dataTableUpsertRowsSchema.parse({
+      filter: {
+        filters: [{ columnName: "id", condition: "eq", value: 1 }],
+      },
+      data: { name: "x" },
+    }),
+    {
+      filter: {
+        type: "and",
+        filters: [{ columnName: "id", condition: "eq", value: 1 }],
+      },
+      data: { name: "x" },
+    }
+  );
 });

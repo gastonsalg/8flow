@@ -78,7 +78,7 @@ const dataTableRowFilterConditionSchema = z.object({
 });
 
 const dataTableRowFilterSchema = z.object({
-  type: z.enum(["and", "or"]),
+  type: z.enum(["and", "or"]).optional().default("and"),
   filters: z.array(dataTableRowFilterConditionSchema).min(1, "At least one filter condition is required"),
 });
 
