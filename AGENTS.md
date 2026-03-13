@@ -10,6 +10,7 @@
 - Keep changes minimal and consistent with existing CLI patterns.
 - Ask before adding new dependencies or altering scripts.
 - Update `README.md` when CLI behavior or usage changes.
+- Before creating a release tag or GitHub release, update `package.json` and `package-lock.json` to the release version so local/build metadata matches the published version.
 - If `.agent/EXECPLAN.md` exists, update its Progress section when milestones are completed.
 
 ## Testing expectations
