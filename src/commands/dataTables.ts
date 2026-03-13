@@ -10,6 +10,19 @@ import {
   validateSchema,
 } from "../validation/schemas.js";
 
+const rowsWriteShapeGuidance =
+  'Rows body must use {"filter":{"type":"and","filters":[{"columnName":"id","condition":"eq","value":"row-id"}]},"data":{...}}.';
+
+function assertRowsWriteBodyShape(body: unknown): void {
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return;
+  }
+
+  if (!("filter" in body) || !("data" in body)) {
+    throw new Error(rowsWriteShapeGuidance);
+  }
+}
+
 export async function listDataTables(
   queryPairs?: string[],
   profileName?: string,
@@ -101,6 +114,7 @@ export async function updateRows(
   const client = createClient(profile);
   const body = parseJsonInput(data, file);
   if (!body) throw new Error("Rows body is required. Use --data or --file.");
+  assertRowsWriteBodyShape(body);
   const validated = validateSchema(dataTableUpdateRowsSchema, body);
   const result = await client.patch(`/data-tables/${id}/rows/update`, validated);
   printResult(result);
@@ -116,6 +130,7 @@ export async function upsertRows(
   const client = createClient(profile);
   const body = parseJsonInput(data, file);
   if (!body) throw new Error("Rows body is required. Use --data or --file.");
+  assertRowsWriteBodyShape(body);
   const validated = validateSchema(dataTableUpsertRowsSchema, body);
   const result = await client.post(`/data-tables/${id}/rows/upsert`, validated);
   printResult(result);

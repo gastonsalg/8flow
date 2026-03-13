@@ -37,16 +37,44 @@ test("dataTableInsertRowsSchema requires data array", () => {
 
 test("dataTableUpdateRowsSchema requires filter/data", () => {
   assert.deepEqual(
-    dataTableUpdateRowsSchema.parse({ filter: { id: 1 }, data: { name: "x" } }),
-    { filter: { id: 1 }, data: { name: "x" } }
+    dataTableUpdateRowsSchema.parse({
+      filter: {
+        type: "and",
+        filters: [{ columnName: "id", condition: "eq", value: 1 }],
+      },
+      data: { name: "x" },
+    }),
+    {
+      filter: {
+        type: "and",
+        filters: [{ columnName: "id", condition: "eq", value: 1 }],
+      },
+      data: { name: "x" },
+    }
   );
   assert.throws(() => dataTableUpdateRowsSchema.parse({}), /Required/);
+  assert.throws(
+    () => dataTableUpdateRowsSchema.parse({ filter: { id: 1 }, data: { name: "x" } }),
+    /Required|Invalid enum value/
+  );
 });
 
 test("dataTableUpsertRowsSchema requires filter/data", () => {
   assert.deepEqual(
-    dataTableUpsertRowsSchema.parse({ filter: { id: 1 }, data: { name: "x" } }),
-    { filter: { id: 1 }, data: { name: "x" } }
+    dataTableUpsertRowsSchema.parse({
+      filter: {
+        type: "and",
+        filters: [{ columnName: "id", condition: "eq", value: 1 }],
+      },
+      data: { name: "x" },
+    }),
+    {
+      filter: {
+        type: "and",
+        filters: [{ columnName: "id", condition: "eq", value: 1 }],
+      },
+      data: { name: "x" },
+    }
   );
   assert.throws(() => dataTableUpsertRowsSchema.parse({}), /Required/);
 });

@@ -603,6 +603,10 @@ dataRows
   .option("-d, --data <json>", "Inline JSON body")
   .option("-f, --file <path>", "Path to JSON file")
   .option("-p, --profile <name>", "Use named profile for this command")
+  .addHelpText(
+    "after",
+    '\nExample payload:\n  {"filter":{"type":"and","filters":[{"columnName":"id","condition":"eq","value":"row-id"}]},"data":{"status":"completed"}}\n'
+  )
   .action(async (dataTableId: string, options: { data?: string; file?: string; profile?: string }) => {
     await updateRows(dataTableId, options.data, options.file, options.profile);
   });
@@ -614,6 +618,10 @@ dataRows
   .option("-d, --data <json>", "Inline JSON body")
   .option("-f, --file <path>", "Path to JSON file")
   .option("-p, --profile <name>", "Use named profile for this command")
+  .addHelpText(
+    "after",
+    '\nExample payload:\n  {"filter":{"type":"and","filters":[{"columnName":"email","condition":"eq","value":"user@example.com"}]},"data":{"email":"user@example.com","status":"active"}}\n'
+  )
   .action(async (dataTableId: string, options: { data?: string; file?: string; profile?: string }) => {
     await upsertRows(dataTableId, options.data, options.file, options.profile);
   });

@@ -1,4 +1,12 @@
 {
-  "filter": {"email": "c@example.com"},
-  "data": {"email": "c@example.com", "plan": "starter"}
+  "filter": {
+    "type": "and",
+    "filters": [
+      { "columnName": "email", "condition": "eq", "value": "c@example.com" }
+    ]
+  },
+  "data": {
+    "email": "c@example.com",
+    "plan": "starter"
+  }
 }
